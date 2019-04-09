@@ -34,5 +34,12 @@ public class ArrayStorage {
     int size() {
         return (int) Arrays.stream(storage).filter(Objects::nonNull).count();
     }
+
+    void update(Resume resume) {
+        storage = Arrays.stream(storage).map(s -> {
+            if (s.equals(resume)) return resume;
+            else return s;
+        }).toArray(Resume[]::new);
+    }
 }
 
