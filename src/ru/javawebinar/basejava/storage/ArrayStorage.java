@@ -1,23 +1,28 @@
+
+package ru.javawebinar.basejava.storage;
+
+import ru.javawebinar.basejava.model.Resume;
+
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private static final int STORAGE_LIMIT = 10000;
+    Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
-    void clear() {
-        Arrays.fill(storage, null);
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    void save(Resume r) {
+    public void save(Resume r) {
         int index = getIndex(r.getUuid());
         if (index != -1)
-            System.out.println("Resume " + r.getUuid() + " already exist");
-        else if (size >= storage.length)
+            System.out.println("Resume " + r.getUuid() + " already isExist");
+        else if (size >= STORAGE_LIMIT)
             System.out.println("Storage overflow");
         else {
             storage[size()] = r;
@@ -25,19 +30,19 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid) {
+    public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
-            System.out.println("Resume " + uuid + " not exist");
+            System.out.println("Resume " + uuid + " not isExist");
             return null;
         }
         return storage[index];
     }
 
-    void delete(String uuid) {
+    public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1)
-            System.out.println("Resume " + uuid + " not exist");
+            System.out.println("Resume " + uuid + " not isExist");
         else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
@@ -48,18 +53,18 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
-    void update(Resume r) {
+    public void update(Resume r) {
         int index = getIndex(r.getUuid());
         if (index == -1)
-            System.out.println("Resume " + r.getUuid() + " not exist");
+            System.out.println("Resume " + r.getUuid() + " not isExist");
         else
             storage[index] = r;
     }
